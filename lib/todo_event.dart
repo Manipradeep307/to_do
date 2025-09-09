@@ -3,8 +3,9 @@ abstract class TodoEvent {}
 class AddTodoEvent extends TodoEvent {
   final String title;
   final String description;
+  final bool isCompleted;
 
-  AddTodoEvent(this.title, this.description);
+  AddTodoEvent(this.title, this.description, this.isCompleted);
 }
 
 class DeleteTodoEvent extends TodoEvent {

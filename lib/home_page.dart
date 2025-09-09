@@ -5,7 +5,7 @@ import 'package:to_do/todo_state.dart';
 import 'todo_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+   HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,37 +19,37 @@ class _HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Task'),
+        title:  Text('Add Task'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _taskController,
-              decoration: const InputDecoration(labelText: 'Task Name'),
+              decoration:  InputDecoration(labelText: 'Task Name'),
             ),
             TextField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
+              decoration:  InputDecoration(labelText: 'Description'),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child:  Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               if (_taskController.text.isNotEmpty && _descriptionController.text.isNotEmpty) {
                 BlocProvider.of<TodoBloc>(context).add(
-                  AddTodoEvent(_taskController.text, _descriptionController.text),
+                  AddTodoEvent(_taskController.text, _descriptionController.text, false),
                 );
                 _taskController.clear();
                 _descriptionController.clear();
                 Navigator.pop(context);
               }
             },
-            child: const Text('Add'),
+            child:  Text('Add'),
           ),
         ],
       ),
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text('To-Do App'))),
+      appBar: AppBar(title:  Center(child: Text('To-Do App'))),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
           return ListView.builder(
@@ -67,8 +67,8 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               final todo = state.todos[index];
               return Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(12.0),
+                margin:  EdgeInsets.all(8.0),
+                padding:  EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8.0),
@@ -82,7 +82,9 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             todo.title,
+
                             style: TextStyle(
+                              fontSize: 24,
                               decoration: todo.isCompleted
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
@@ -90,13 +92,37 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Text(
                             todo.description,
-                            style: const TextStyle(fontSize: 12),
+                            style:  TextStyle(fontSize: 22,
+                              decoration: todo.isCompleted
+                              ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                               Text('Status: '),
+                              GestureDetector(
+                                onTap: () {
+                                  BlocProvider.of<TodoBloc>(context).add(ToggleTodoEvent(index));
+                                },
+                                child: Text(
+                                  todo.isCompleted ? 'Completed' : 'Incomplete',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: todo.isCompleted ? Colors.green : Colors.red,
+                                    decoration: todo.isCompleted
+                                        ? TextDecoration.underline
+                                        : TextDecoration.none,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.delete),
+                      icon:  Icon(Icons.delete),
                       onPressed: () {
                         BlocProvider.of<TodoBloc>(context)
                             .add(DeleteTodoEvent(index));
@@ -111,7 +137,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddTaskDialog,
-        child: const Icon(Icons.add),
+        child:  Icon(Icons.add),
       ),
     );
   }

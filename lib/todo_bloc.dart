@@ -13,7 +13,7 @@ class Todo {
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc() : super(TodoInitial()) {
     on<AddTodoEvent>((event, emit) {
-      final newTodos = List.of(state.todos)..add(Todo(event.title, event.description));
+      final newTodos = List.of(state.todos)..add(Todo(event.title, event.description, isCompleted: event.isCompleted));
       emit(TodoUpdated(newTodos));
     });
 
