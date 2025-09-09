@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             TextField(
               controller: _taskController,
-              decoration: const InputDecoration(labelText: 'Task Message'),
+              decoration: const InputDecoration(labelText: 'Task Name'),
             ),
             TextField(
               controller: _descriptionController,
